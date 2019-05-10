@@ -1,0 +1,19 @@
+{
+  "name": "cel_node",
+  "version": "1.0.0",
+  "description": "Requirements engineering tool to describe scenarios and lexicon sybmbols",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ekalmentero/cel_node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ekalmentero/cel_node/issues"
+  },
+  "homepage": "https://github.com/ekalmentero/cel_node#readme"
+}
