@@ -1,0 +1,8 @@
+{
+  "name": "cel_klemer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ekalmentero/cel_node",
+  "author": "KlemerMonteiro <klemermonteiro93@gmail.com>",
+  "license": "MIT"
+}
