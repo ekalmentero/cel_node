@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/ekalmentero/cel_node/issues"
   },
-  "homepage": "https://github.com/ekalmentero/cel_node#readme"
+  "homepage": "https://github.com/ekalmentero/cel_node#readme",
+  "dependencies": {
+    "lunr": "^2.3.6"
+  }
 }
