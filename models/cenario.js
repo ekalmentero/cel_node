@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Cenario = sequelize.define('Cenario', {
-    Titulo: {
+    titulo: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {

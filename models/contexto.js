@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Contexto = sequelize.define('Contexto', {
-    Descricao:  {
+    descricao:  {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
