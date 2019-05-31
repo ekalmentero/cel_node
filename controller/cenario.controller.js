@@ -73,3 +73,60 @@ exports.delete = (req, res) => {
     res.status(200).send("Cenário com o id=" + id + " deletado com sucesso");
   });
 };
+
+// UPDATE cenarios
+exports.updateCenario = (req,res) =>{
+	const id = req.params.id_cenario;
+	const titulo = req.body;
+	model.Cenario.update({
+		titulo:titulo
+	},{
+		where:{
+			id:id
+		}
+	})
+	.then(cenario => res.status(201).json({
+		error:false,
+		message: 'Cenario atualizado'
+	}))
+	.catch(e => res.json({
+		error: true,
+		error:e
+	}))
+}
+
+//UPDATE excecoes
+
+exports.updateExec = (req,res) =>{
+  const idcenario = req.params.id;
+  const id_exec = req.params.id_exec;
+  model.Excecao.update(
+    { descricao: req.body.descricao },
+    {
+      where: {
+        id: id_exec,
+        cenarioId: idcenario
+      }
+    }
+  ).then(() => {
+    res.status(200).send("updated.");
+  });
+};
+
+exports.updateRecursos= (req,res) =>{
+  const idcenario = req.params.id;
+  const id_recurso = req.params.id_recurso;
+  model.Recurso.update(
+    { descricao: req.body.descricao },
+    {
+      where: {
+        id: id_recurso,
+        cenarioId: idcenario
+      }
+    }
+  ).then(() => {
+    res.status(200).send("updated.");
+  });
+}
+
+
