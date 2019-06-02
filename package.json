@@ -1,8 +1,20 @@
 {
-  "name": "cel_klemer",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/ekalmentero/cel_node",
-  "author": "KlemerMonteiro <klemermonteiro93@gmail.com>",
-  "license": "MIT"
+  "name": "cel_node",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node start"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "debug": "^3.2.6",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "mysql": "^2.17.1",
+    "pug": "^2.0.0-rc.4",
+    "sequelize": "^3.34.0",
+    "sequelize-cli": "^3.2.0",
+    "serve-favicon": "^2.5.0"
+  }
 }

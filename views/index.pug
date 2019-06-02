@@ -1,0 +1,44 @@
+block content
+  h1= title
+
+  div
+    h2 Cadastro de simbolos
+
+    form(action="/simbolos/create", method="post", class="form1")
+      div(class="form-group")
+        label(for="nome") nome  &nbsp;
+        input(type="text", name="nome", class="nome")
+      div(class="form-group")
+        label(for="nocao") noção &nbsp;
+        input(type="text", name="nocao", class="nocao")
+      div(class="form-group")
+        label(for="impacto") impacto  &nbsp;
+        input(type="text", name="impacto", class="impacto")
+      div(class="form-group")
+        label(for="classificacao") classificação  &nbsp;
+        input(type="text", name="classificacao", class="classificacao")
+
+      input(type="submit" class="cadastrar")
+
+  div(class="col-md-6")
+    h2 Simbolos
+
+    ul
+      each simbolo in simbolos
+        li
+          strong
+            = simbolo.nome
+          | &nbsp;
+          a(href="/simbolos/" + simbolo.id + "/destroy", class="btn btn-xs btn-warning") delete
+          ul
+            li
+              | adicionar sinonimo
+              form(action="/simbolos/" + simbolo.id + "/sinonimos/create", method="post", class="form-inline")
+                div(class="form-group")
+                  input(type="text", name="title", class="input-sm form-control")
+                  input(type="submit", class="btn btn-sm btn-default")
+              li
+                strong
+                //  = sinonimo.nome
+                //| &nbsp;
+                //a(href="/simbolos/" + simbolo.id + "/sinonimos/" + sinonimo.id + "/destroy",  class="btn btn-xs btn-warning") delete

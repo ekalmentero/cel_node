@@ -1,0 +1,17 @@
+{
+    "addons": [
+        {
+            "plan": "teste"
+        }
+    ],
+    "buildpacks": [],
+    "env": {
+        "NODE_ENV": {
+            "description": "teste",
+            "value": "production"
+        }
+    },
+    "formation": {},
+    "name": "cel_node",
+    "scripts": {}
+}
