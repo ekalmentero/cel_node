@@ -4,7 +4,7 @@
   "description": "Requirements engineering tool to describe scenarios and lexicon sybmbols",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/ekalmentero/cel_node#readme",
   "dependencies": {
-    "lunr": "^2.3.6"
+    "lunr": "^2.3.6",
+    "mockaroo": "^0.1.7"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0"
   }
 }
