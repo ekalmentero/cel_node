@@ -177,3 +177,15 @@ it('Returns links even the terms are made with words in comon', () => {
   expect(foundWords).toHaveLength(terms.length);
   expect(foundWords).toEqual(terms);
 });
+
+//Cobertura-tamanho 25 testes
+
+//Quando eu tenho 1 termo e um texto de tamanho 30 e contém o termo devo 1 found word
+
+//Quando eu tenho 1 termo e um texto de tamanho 30 e não contém o termo devo 0 found word
+
+//Quando eu tenho 10 termos e um texto de tamanho 40 e contém o termo devo 10 found word
+
+//Quando eu tenho 10 termos e um texto de tamanho 40 e não contém todos termo devo 10 found words
+
+//Quando eu tenho 30 termos e tm texto d
