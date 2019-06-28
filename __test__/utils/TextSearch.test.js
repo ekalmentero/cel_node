@@ -1,5 +1,7 @@
-const Mockaroo = require('mockaroo');
+const mockarooClient = require('../../src/api/mockaroo');
+const lorem = require('../../src/utils/loremIpsum');
 const TextSearch = require('../../src/utils/TextSearch');
+
 
 /* Boundary Specs */
 beforeEach(() => {
@@ -178,14 +180,352 @@ it('Returns links even the terms are made with words in comon', () => {
   expect(foundWords).toEqual(terms);
 });
 
-//Cobertura-tamanho 25 testes
+//Cobertura - Tamanho
 
-//Quando eu tenho 1 termo e um texto de tamanho 30 e contém o termo devo 1 found word
+it('Quando eu tenho 1 termo e um texto de 30 palavras e contém o termo devo ter 1 foundWord', () => {
+  
+  let terms = ["Ford"];
+  let text = "Lorem ipsum fusce imperdiet lacus pharetra aliquam non pulvinar, sagittis arcu mollis primis etiam diam. litora non gravida orci at malesuada ac feugiat class, etiam metus augue curabitur eros etiam."
+  text = text.concat(` ${terms.termo}`);
 
-//Quando eu tenho 1 termo e um texto de tamanho 30 e não contém o termo devo 0 found word
+  let { foundWords } = textSearch.findSelectedPatterns([terms.termo], text);
 
-//Quando eu tenho 10 termos e um texto de tamanho 40 e contém o termo devo 10 found word
+  //Assertions
+  expect(foundWords).toEqual([terms.termo]);
+  expect(foundWords.length).toEqual(1);
+});
 
-//Quando eu tenho 10 termos e um texto de tamanho 40 e não contém todos termo devo 10 found words
+it('Quando eu tenho 1 termo e um texto de tamanho 30 palavras e não contém o termo devo 0 foundWord', () => {
 
-//Quando eu tenho 30 termos e tm texto d
+  let terms = ["Ford"];
+  let text = "Lorem ipsum fusce imperdiet lacus pharetra aliquam non pulvinar, sagittis arcu mollis primis etiam diam. litora non gravida orci at malesuada ac feugiat class, etiam metus augue curabitur eros etiam."
+
+  let { foundWords } = textSearch.findSelectedPatterns([terms.termo], text);
+  //Assertions
+  expect(foundWords).not.toEqual([terms.termo]);
+  expect(foundWords.length).not.toEqual(1);
+});
+
+it('Quando eu tenho 10 termos e um texto de tamanho 40 e contém o termo devo 10 foundWords', () => {
+
+  let terms = ["termo", "Ford", "Cadillac", "GMC", "Dodge", "Mercedes-Benz", "Toyota", "Oldsmobile", "Nissan", "Rolls-Royce"]
+  let text = "Lorem ipsum lacus phasellus ligula maecenas per dapibus, varius aenean urna tincidunt varius vivamus, quisque morbi porta ullamcorper vel vehicula. viverra morbi nisl lobortis torquent ullamcorper non sociosqu, feugiat fames vivamus cursus id inceptos, nostra etiam orci eleifend porta felis.";
+  terms.forEach( term => {text = text.concat(` ${term} `)});
+
+  let { foundWords } = textSearch.findSelectedPatterns(terms, text);
+
+  //Assertions
+  expect(foundWords.length).toEqual(10);
+});
+
+it("Quando eu tenho 10 termos e um texto de 40 palavras e não contém todos termos devo menos de 10 foundWords", () => {
+
+  let terms = ["termo", "Ford", "Cadillac", "GMC", "Dodge", "Mercedes-Benz", "Toyota", "Oldsmobile", "Nissan", "Rolls-Royce"]
+  let text = "Lorem ipsum lacus phasellus ligula maecenas per dapibus, varius aenean urna tincidunt varius vivamus, quisque morbi porta ullamcorper vel vehicula. viverra morbi nisl lobortis torquent ullamcorper non sociosqu, feugiat fames vivamus cursus id inceptos, nostra etiam orci eleifend porta felis.";
+
+  let { foundWords } = textSearch.findSelectedPatterns(terms, text);
+
+  //Assertions
+  expect(foundWords.length).toBeLessThan(10);
+});
+
+it("Quando eu tenho 30 termos e um texto de 50 palavras e contém todos os termos devo ter 30 foundWords", () => {
+
+  let terms = ["Ascort",
+  "Austin",
+  "Bush Ranger",
+  "Australian Six",
+  "Australis",
+  "Blade",
+  "Buchanan",
+  "Buckle",
+  "Caldwell Vale",
+  "Cheetah",
+  "Chrysler",
+  "FPV",
+  "Ford",
+  "Goggomobil",
+  "Giocattolo",
+  "Holden",
+  "HSV",
+  "Ilinga",
+  "Hartnett",
+  "Leyland",
+  "Lonsdale",
+  "Lloyd-Hartnett",
+  "Kaditcha",
+  "Mitsubishi",
+  "Morris",
+  "Nissan",
+  "Pellandini",
+  "Purvis Eureka",
+  "Southern Cross",
+  "Shrike"];
+  let text = "Lorem ipsum placerat in augue ac cubilia nulla, praesent porta purus proin nulla morbi, pharetra pulvinar imperdiet purus sed senectus ";
+
+  terms.forEach( term => {text = text.concat(` ${term} `)});
+
+  let { foundWords } = textSearch.findSelectedPatterns(terms, text);
+
+  //Assertions
+  expect(foundWords.length).toEqual(30);
+});
+
+it("Quando eu tenho 30 termos e um texto de 50 palavras e não contém todos os termos devo ter menos de 30 foundWords", () => {
+  let terms = ["Ascort",
+  "Austin",
+  "Bush Ranger",
+  "Australian Six",
+  "Australis",
+  "Blade",
+  "Buchanan",
+  "Buckle",
+  "Caldwell Vale",
+  "Cheetah",
+  "Chrysler",
+  "FPV",
+  "Ford",
+  "Goggomobil",
+  "Giocattolo",
+  "Holden",
+  "HSV",
+  "Ilinga",
+  "Hartnett",
+  "Leyland",
+  "Lonsdale",
+  "Lloyd-Hartnett",
+  "Kaditcha",
+  "Mitsubishi",
+  "Morris",
+  "Nissan",
+  "Pellandini",
+  "Purvis Eureka",
+  "Southern Cross",
+  "Shrike"];
+  let text = "Lorem ipsum nostra interdum consequat amet vivamus facilisis hendrerit tortor, ullamcorper quam bibendum lacus vivamus non massa hendrerit dictumst, nisl mattis suspendisse conubia sagittis platea cursus proin. nec ipsum sapien curabitur justo vivamus, aenean sem tincidunt sapien volutpat, malesuada tempus eros suscipit. sed aliquet eros interdum ipsum, viverra tempor gravida ";
+  
+  let { foundWords } = textSearch.findSelectedPatterns(terms, text);
+
+  //Assertions
+  expect(foundWords.length).toBeLessThan(30);
+});
+
+it("Quando eu tenho 50 termos e um texto de tamanho 70 e contém todos os termos devo ter 50 foundWords", ()=> {
+  let terms = ["Ascort",
+  "Austin",
+  "Bush Ranger",
+  "Australian Six",
+  "Australis",
+  "Blade",
+  "Buchanan",
+  "Buckle",
+  "Caldwell Vale",
+  "Cheetah",
+  "Chrysler",
+  "FPV",
+  "Ford",
+  "Goggomobil",
+  "Giocattolo",
+  "Holden",
+  "HSV",
+  "Ilinga",
+  "Hartnett",
+  "Leyland",
+  "Lonsdale",
+  "Lloyd-Hartnett",
+  "Kaditcha",
+  "Mitsubishi",
+  "Morris",
+  "Nissan",
+  "Pellandini",
+  "Purvis Eureka",
+  "Southern Cross",
+  "Shrike",
+  "Statesman",
+  "Tarrant",
+  "Toyota Australian production finished",
+  "Zeta",
+  "Birchfield",
+  "Bolwell",
+  "Bullet",
+  "Carbontech",
+  "Classic Glass",
+  "Daytona",
+  "Devaux",
+  "DRB",
+  "E-Vade",
+  "Elfin",
+  "Finch",
+  "Joss",
+  "Nota",
+  "Pioneer",
+  "PRB",
+  "Python"]
+  let text = "Lorem ipsum nullam blandit libero morbi elementum purus, molestie mollis mattis cursus diam imperdiet, elit tincidunt habitant ac lacus curabitur "
+  terms.forEach( term => {text = text.concat(` ${term} `)});
+  let { foundWords } = textSearch.findSelectedPatterns(terms, text);
+
+  //Assertions
+  expect(foundWords.length).toEqual(50);
+})
+
+it("Quando eu tenho 50 termos e um texto de tamanho 70 e não contém todos os termos devo ter menos 50 foundWords", () => {
+  let terms = ["Ascort",
+"Austin",
+"Bush Ranger",
+"Australian Six",
+"Australis",
+"Blade",
+"Buchanan",
+"Buckle",
+"Caldwell Vale",
+"Cheetah",
+"Chrysler",
+"FPV",
+"Ford",
+"Goggomobil",
+"Giocattolo",
+"Holden",
+"HSV",
+"Ilinga",
+"Hartnett",
+"Leyland",
+"Lonsdale",
+"Lloyd-Hartnett",
+"Kaditcha",
+"Mitsubishi",
+"Morris",
+"Nissan",
+"Pellandini",
+"Purvis Eureka",
+"Southern Cross",
+"Shrike",
+"Statesman",
+"Tarrant",
+"Toyota Australian production finished",
+"Zeta",
+"Birchfield",
+"Bolwell",
+"Bullet",
+"Carbontech",
+"Classic Glass",
+"Daytona",
+"Devaux",
+"DRB",
+"E-Vade",
+"Elfin",
+"Finch",
+"Joss",
+"Nota",
+"Pioneer",
+"PRB",
+"Python"]
+let text = "Lorem ipsum nullam blandit libero morbi elementum purus, molestie mollis mattis cursus diam imperdiet, elit tincidunt habitant ac lacus curabitur ";
+
+let { foundWords } = textSearch.findSelectedPatterns(terms, text);
+
+//Assertions
+expect(foundWords.length).toBeLessThan(50);
+});
+
+
+it("Quando eu tenho 70 termos e um texto de tamanho 90 e contém todos os termos devo ter 70 foundWords", () => {
+  let terms = ["Ascort",
+  "Austin",
+  "Bush Ranger",
+  "Australian Six",
+  "Australis",
+  "Blade",
+  "Buchanan",
+  "Buckle",
+  "Caldwell Vale",
+  "Cheetah",
+  "Chrysler",
+  "FPV",
+  "Ford",
+  "Goggomobil",
+  "Giocattolo",
+  "Holden",
+  "HSV",
+  "Ilinga",
+  "Hartnett",
+  "Leyland",
+  "Lonsdale",
+  "Lloyd-Hartnett",
+  "Kaditcha",
+  "Mitsubishi",
+  "Morris",
+  "Nissan",
+  "Pellandini",
+  "Purvis Eureka",
+  "Southern Cross",
+  "Shrike",
+  "Statesman",
+  "Tarrant",
+  "Toyota Australian production finished",
+  "Zeta",
+  "Birchfield",
+  "Bolwell",
+  "Bullet",
+  "Carbontech",
+  "Classic Glass",
+  "Daytona",
+  "Devaux",
+  "DRB",
+  "E-Vade",
+  "Elfin",
+  "Finch",
+  "Joss",
+  "Nota",
+  "Pioneer",
+  "PRB",
+  "Python",
+  "Tomcar",
+  "Anasagasti (1911–1915)",
+  "Andino (1967–1973)",
+  "Hispano-Argentina (1925–1953)",
+  "Eniak (1983–1989)",
+  "Industrias Aeronáuticas y Mecánicas del Estado"
+  "Industrias Eduardo Sal-Lari",
+  "Industrias Kaiser Argentina",
+  "Adelmo",
+  "ASA",
+  "de Carlo",
+  "Feresa",
+  "Koller",
+  "Oliva",
+  "Winograd",
+  "NAZ",
+  "Ganja Machine Factory",
+  "AzSamand",
+  "Khazar",
+  "Apal"],
+
+})
+
+//Quando eu tenho 70 termos e um texto de tamanho 90 e não contém todos os termos devo ter menos 70 foundWords
+
+//Quando eu tenho 90 termos e um texto de tamanho 110 e contém todos os termos devo ter 90 foundWords
+
+//Quando eu tenho 90 termos e um texto de tamanho 110 e não contém todos os termos devo ter menos 90 foundWords
+
+//Quando eu tenho 110 termos e um texto de tamanho 130 e contém todos os termos devo ter 110 foundWords
+
+//Quando eu tenho 110 termos e um texto de tamanho 130 e não contém todos os termos devo ter menos 110 foundWords
+
+//Quando eu tenho 130 termos e um texto de tamanho 150 e contém todos os termos devo ter 130 foundWords
+
+//Quando eu tenho 130 termos e um texto de tamanho 150 e não contém todos os termos devo ter menos 130 foundWords
+
+//Quando eu tenho 150 termos e um texto de tamanho 170 e contém todos os termos devo ter 150 foundWords
+
+//Quando eu tenho 150 termos e um texto de tamanho 170 e não contém todos os termos devo ter menos 150 foundWords
+
+//Quando eu tenho 170 termos e um texto de tamanho 190 e contém todos os termos devo ter 170 foundWords
+
+//Quando eu tenho 170 termos e um texto de tamanho 190 e não contém todos os termos devo ter menos 170 foundWords
+
+//Quando eu tenho 190 termos e um texto de tamanho 210 e contém todos os termos devo ter 190 foundWords
+
+//Quando eu tenho 190 termos e um texto de tamanho 210 e não contém todos os termos devo ter menos 190 foundWords
+

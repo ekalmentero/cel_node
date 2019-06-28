@@ -17,10 +17,13 @@
   },
   "homepage": "https://github.com/ekalmentero/cel_node#readme",
   "dependencies": {
+    "lerolero": "^0.1.0",
+    "lorem-ipsum": "^2.0.3",
     "lunr": "^2.3.6",
     "mockaroo": "^0.1.7"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.4.5",
     "jest": "^24.8.0"
   }
 }
