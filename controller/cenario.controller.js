@@ -17,6 +17,30 @@ exports.viewAll = (req, res) => {
     );
 };
 
+exports.view = (req, res) => {
+  const { id } = req.params;
+  model.Cenario.findByPk(id, { include: [{ all: true, nested: true }] }).then(
+    cenario => {
+      if(!cenario) {
+        res.status(404).json({
+          error: true,
+          message: "Cenario nao existe"
+        })
+        return;
+      }
+      res.status(200).json({
+        error: false,
+        data: cenario
+      })
+    }
+  ).catch(error => {
+    res.status(403).json({
+      error: true,
+      message: "Erro ao processar requisicao"
+    })
+  })
+}
+
 exports.createCenario = (req, res) => {
   const{
     tituloCenario,

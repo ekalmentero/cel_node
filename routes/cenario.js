@@ -4,6 +4,7 @@ var cenarioController = require("../controller/cenario.controller");
 
 /* GET cenário listing. */
 router.get("/", cenarioController.viewAll);
+router.get("/:id/", cenarioController.view);
 router.post("/", cenarioController.createCenario);
 router.put('/',cenarioController.updateCenario)
 router.put("/:id/atores/:idator", cenarioController.updateAtor);
