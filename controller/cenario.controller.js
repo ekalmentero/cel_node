@@ -17,6 +17,78 @@ exports.viewAll = (req, res) => {
     );
 };
 
+exports.createCenario = (req, res) => {
+  const{
+    tituloCenario,
+    descricaoContexto,
+    nomeAtor,
+    descricaoEpisodio,
+    descricaoRecurso,
+    descricaoExcecao
+  } = req.body;
+  model.Cenario.create({
+    titulo: tituloCenario
+  })
+  .then(cenario => 
+    model.Contexto.create({
+          descricao: descricaoContexto,
+          cenarioId: cenario.id
+        })
+        .then(function criarAtor(){
+          var ator = nomeAtor.split(',');
+          var qtdAtor = ator.length;
+          for(let i=0; i<qtdAtor;i++){
+            model.Ator.create({
+              nome: ator[i],
+              cenarioId: cenario.id
+            })
+          }})
+        .then(function criarRecurso(){
+          var recurso = descricaoRecurso.split(',');
+          var qtdRecurso = recurso.length;
+          for(let i=0; i<qtdRecurso;i++){
+            model.Recurso.create({
+              descricao: recurso[i],
+              cenarioId: cenario.id
+            })
+          }})
+        .then(function criarExcecao(){
+          var excecao = descricaoExcecao.split(',');
+          var qtdExcecao = excecao.length;
+          for(let i=0; i<qtdExcecao;i++){
+            model.Excecao.create({
+              descricao: excecao[i],
+              cenarioId: cenario.id
+            })
+          }})
+        .then(function criarEpisodio(){
+          var episodio = descricaoEpisodio.split('/');
+          var qtdEpisodio = episodio.length;
+          for(let i=0; i<qtdEpisodio;i++){
+            var atributoEpisodio = episodio[i].split(',');
+            model.Episodio.create({
+              descricao: atributoEpisodio[0],
+              tipo: atributoEpisodio[1],
+              cenarioId: cenario.id
+            })
+          }})
+        .then(contextos => res.json({
+          error: false,
+          data: cenario
+        }))
+        .catch(error => res.json({
+          error: true,
+          data: [],
+          error: error
+        }))
+    )
+  .catch(error => res.json({
+    error: true,
+    data: [],
+    error: error
+  }));
+};
+
 exports.updateAtor = (req, res) => {
   const id = req.params.id;
   const idator = req.params.idator;
