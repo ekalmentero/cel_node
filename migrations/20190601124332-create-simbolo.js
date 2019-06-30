@@ -11,6 +11,7 @@ module.exports = {
       },
   
       nome:  {
+        unique : true,
         type: Sequelize.STRING
       },
       nocao: {

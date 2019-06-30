@@ -1,14 +1,8 @@
 var models  = require('../models');
 var express = require('express');
+var index_controller = require ('../controllers/index')
 var router  = express.Router();
 
-router.get('/', function(req, res) {
-  models.Simbolo.findAll({
-  }).then(function(simbolos) {
-   res.render('index', {
-   simbolos: simbolos
-  });
-});
-});
+router.get('/', index_controller.simbolo_find);
 
 module.exports = router;
