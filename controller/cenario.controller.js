@@ -245,6 +245,7 @@ exports.updateCenarioRemovendoEpisodios = (req, res) =>{
     tituloCenario,
     descricaoContexto,
     nomeAtor,
+    descricaoEpisodio,
     descricaoRecurso,
     descricaoExcecao
   } = req.body;
@@ -255,9 +256,55 @@ exports.updateCenarioRemovendoEpisodios = (req, res) =>{
       id: idcenario
     }
   })
-  .then(cenario => model.Episodio.destroy({
-    where: {cenarioId: idcenario}
-  }))
+  .then(cenario => {
+    var episodio = descricaoEpisodio.split('/');
+    if(episodio.length == 'undefined'){
+      model.Episodio.destroy({
+        where: {cenarioId: idcenario}
+      })
+    }else if(episodio.length == 1){
+      model.Episodio.findAll({
+        where: {cenarioId: idcenario}
+      })
+      .then(episodios => {
+        var qtd = episodios.length;
+        for(let i=0;i<qtd;i++){
+          var atributoEpisodio = episodio[i].split(',');
+          if(i=0){
+            model.Episodio.update({
+              descricao: atributoEpisodio[0],
+              tipo: atributoEpisodio[1]
+              },{where: {id: episodios[i].id}
+            })
+          }else{
+            model.Episodio.destroy({
+              where: {id: episodios[i].id}
+            })
+          }
+        }
+      })
+    }else{
+      model.Episodio.findAll({
+        where: {cenarioId: idcenario}
+      })
+      .then(episodios => {
+        var qtd = episodios.length;
+        for(let i=0;i<qtd;i++){
+          var atributoEpisodio = episodio[i].split(',');
+          if(episodios[i] != 'undefined'){
+            model.Episodio.update({
+              descricao: atributoEpisodio[0],
+              tipo: atributoEpisodio[1]
+              },{where: {id: episodios[i].id}
+            })
+          }else{
+            model.Episodio.destroy({
+              where: {id: episodios[i].id}
+            })
+          }
+        }})
+    }
+  })
   .then(cenario => model.Contexto.update({
     descricao: descricaoContexto
   },{
@@ -307,7 +354,7 @@ exports.updateCenarioRemovendoEpisodios = (req, res) =>{
       data: [],
       error: error
     }));
-  }, 300))
+  }, 500))
 }
 /* function criarExcecao(){
                   var excecao = descricaoExcecao.split(',');
