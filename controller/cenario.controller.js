@@ -492,6 +492,135 @@ exports.updateCenarioRemovendoRecursos = (req, res) =>{
     }));
   }, 500))
 }
+
+exports.updateCenarioRemovendoAtores = (req, res) =>{
+  const idcenario = req.params.id;
+  const{
+    tituloCenario,
+    descricaoContexto,
+    nomeAtor,
+    descricaoEpisodio,
+    descricaoRecurso,
+    descricaoExcecao
+  } = req.body;
+  model.Cenario.update({
+    titulo: tituloCenario
+  },{
+    where: {
+      id: idcenario
+    }
+  })
+  .then(cenario => {
+    model.Episodio.findAll({
+      where: {cenarioId: idcenario}
+    }).then(episodios => {
+    var qtd = episodios.length;
+    var episodio = descricaoEpisodio.split('/');
+    for(let i=0; i<qtd; i++){
+      var atributoEpisodio = episodio[i].split(',');
+      model.Episodio.update({
+        descricao: atributoEpisodio[0],
+        tipo: atributoEpisodio[1]
+      }, {where: {id: episodios[i].id}})
+    }
+  })
+  })
+  .then(cenario => model.Contexto.update({
+    descricao: descricaoContexto
+  },{
+    where: {cenarioId: idcenario}
+  }))
+  .then(cenario => {
+    var ator = nomeAtor.split(',');
+    if(ator.length == 'undefined'){
+       model.Ator.destroy({
+        where: {cenarioId: idcenario}
+      })
+    }else if(ator.length == 1){
+      if(ator == ""){
+        model.Ator.destroy({
+          where: {cenarioId: idcenario}
+        })
+      }else{
+        model.Ator.findAll({
+          where: {cenarioId: idcenario}
+        })
+        .then(ators => {
+          var qtd = ators.length;
+          for(let i=0;i<qtd;i++){
+            if(i==0){
+              model.Ator.update({
+                nome: ator[i]
+                },{where: {id: ators[i].id}
+              })
+            }else{
+              model.Ator.destroy({
+                where: {id: ators[i].id}
+              })
+            }
+          }
+        })   
+      }
+    }else{
+      model.Ator.findAll({
+        where: {cenarioId: idcenario}
+      })
+      .then(ators => {
+        var qtd = ators.length;
+        for(let i=0;i<qtd;i++){
+          if(ators[i] != 'undefined'){
+            if(ator[i]){
+              model.Ator.update({
+              nome: ator[i]
+              },{where: {id: ators[i].id}
+            })
+            }else{
+              model.Ator.destroy({
+                where: {id: ators[i].id}
+              })
+            }
+          }else{
+            model.Ator.destroy({
+              where: {id: ators[i].id}
+            })
+          }
+        }})
+    }
+  })
+  .then(cenario => model.Recurso.findAll({
+    where: {cenarioId: idcenario}
+  }).then(recursos => {
+    var qtd = recursos.length;
+    var recurso = descricaoRecurso.split(',');
+    for(let i=0; i<qtd; i++){
+      model.Recurso.update({
+        descricao: recurso[i]
+      }, {where: {id: recursos[i].id}})
+    }
+  }))
+  .then(cenario => model.Excecao.findAll({
+    where: {cenarioId: idcenario}
+  }).then(excecaos => {
+    var qtd = excecaos.length;
+    var excecao = descricaoExcecao.split(',');
+    for(let i=0; i<qtd; i++){
+      model.Excecao.update({
+        descricao: excecao[i]
+      }, {where: {id: excecaos[i].id}})
+    }
+  }))
+  .then(cenario => setTimeout(function () {model.Cenario.findByPk(idcenario, { include: [{ all: true, nested: true }] })
+    .then(response => res.status(200).json({
+      error: false,
+      data: response
+    }))
+    .catch(error => res.status(403).json({
+      error: true,
+      data: [],
+      error: error
+    }));
+  }, 500))
+}
 /* function criarExcecao(){
                   var excecao = descricaoExcecao.split(',');
                   var qtdExcecao = excecao.length;
