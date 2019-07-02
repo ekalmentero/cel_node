@@ -141,7 +141,7 @@ exports.updateAtor = (req, res) => {
   ).then(() => {
     res.status(200).send("updated.");
   })
-  .catch(ator => res.status(400));
+  .catch(error => res.status(400).json({error:true, data:[], error: error}));
 };
 
 exports.updateContexto = (req, res) => {
@@ -158,7 +158,7 @@ exports.updateContexto = (req, res) => {
   ).then(() => {
     res.status(200).send("updated.");
   })
-  .catch(contexto => res.status(400));
+  .catch(error => res.status(400).json({error:true, data:[], error: error}));
 };
 
 exports.updateEpisodio = (req, res) => {
@@ -175,7 +175,7 @@ exports.updateEpisodio = (req, res) => {
   ).then(() => {
     res.status(200).send("updated.");
   })
-  .catch(episodio => res.status(400));
+  .catch(error => res.status(400).json({error:true, data:[], error: error}));
 };
 
 exports.delete = (req, res) => {
@@ -224,7 +224,7 @@ exports.updateExec = (req,res) =>{
   ).then(() => {
     res.status(200).send("updated.");
   })
-  .catch(excecao => res.status(400));
+  .catch(error => res.status(400).json({error:true, data:[], error: error}));
 };
 
 exports.updateRecursos= (req,res) =>{
@@ -241,7 +241,7 @@ exports.updateRecursos= (req,res) =>{
   ).then(() => {
     res.status(200).send("updated.");
   })
-  .catch(recurso => res.status(400));
+  .catch(error => res.status(400).json({error:true, data:[], error: error}));
 }
 
 exports.updateCenarioRemovendoEpisodios = (req, res) =>{
