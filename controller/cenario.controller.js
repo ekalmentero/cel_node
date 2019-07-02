@@ -180,11 +180,21 @@ exports.updateEpisodio = (req, res) => {
 
 exports.delete = (req, res) => {
   const id = req.params.id;
-  model.Cenario.destroy({
-    where: { id: id }
-  }).then(() => {
-    res.status(200).send("Cenário com o id=" + id + " deletado com sucesso");
-  });
+  model.Cenario.findAll({where: {id: id}})
+  .then(cenario => {
+    var tamanho = cenario.length;
+    if(tamanho == 0){
+      res.status(404).json({error: true, data: 'Não existe Cenário com o id fornecido'})
+    }else{
+      model.Cenario.destroy({
+        where: { id: id }
+      }).then(cenario => {
+        res.status(200).json({error: false, data: "Cenário com o id = " + id + " deletado com sucesso"});
+      })
+      .catch(error => res.status(400).json({error:true, data:[], error: error}));
+    }
+  })
+  .catch(error => res.status(400).json({error:true, data:[], error: error}));
 };
 
 // UPDATE cenarios
@@ -360,7 +370,7 @@ exports.updateCenarioRemovendoEpisodios = (req, res) =>{
       error: false,
       data: response
     }))
-    .catch(error => res.status(403).json({
+    .catch(error => res.status(400).json({
       error: true,
       data: [],
       error: error
@@ -490,7 +500,7 @@ exports.updateCenarioRemovendoRecursos = (req, res) =>{
       error: false,
       data: response
     }))
-    .catch(error => res.status(403).json({
+    .catch(error => res.status(400).json({
       error: true,
       data: [],
       error: error
@@ -619,7 +629,7 @@ exports.updateCenarioRemovendoAtores = (req, res) =>{
       error: false,
       data: response
     }))
-    .catch(error => res.status(403).json({
+    .catch(error => res.status(400).json({
       error: true,
       data: [],
       error: error
