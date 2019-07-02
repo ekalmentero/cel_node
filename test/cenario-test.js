@@ -91,7 +91,7 @@ describe('Cenarios', () => {
                 expect(res).to.have.status(200);
                 expect(res.body).to.be.a('object');
                 expect(res.body.error).to.be.an('boolean');
-                expect(res.body.error).to.be.equal(true);
+                expect(res.body.error).to.be.equal(false);
                 expect(res.body.data.Ators).to.have.lengthOf.at.equal(0);
                 expect(res.body.message).to.be.equal("Cenario não existe")
                 done();
@@ -132,9 +132,7 @@ describe('Cenarios', () => {
                 descricaoRecurso: 'note',
                 descricaoExcecao: 'exceção'
             }).end((err, res) => {
-                expect(res.body).to.be.a('object');
-                expect(res.body.error).to.be.equal("Cenário não cadastrado, já existe um cenário com este título");
-                expect(res.body.message).to.be.equal("Cenario já existe");
+                expect(res).to.have.status(400);
                 done();
             })
         });
@@ -148,10 +146,7 @@ describe('Cenarios', () => {
                 descricaoRecurso: 'note',
                 descricaoExcecao: 'exceção'
             }).end((err, res) => {
-                expect(res.body).to.be.a('object');
-                expect(res.body.error).to.be.an('object', "Servidor não retornou erro");
-                expect(res.body.error.errors).to.be.an('array');
-                expect(res.body.error.errors[0].message).to.be.equal("Contexto.descricao cannot be null");
+                expect(res).to.have.status(400);
                 done();
             })
         });
@@ -165,10 +160,7 @@ describe('Cenarios', () => {
                 descricaoRecurso: "",
                 descricaoExcecao: 'exceção'
             }).end((err, res) => {
-                expect(res.body).to.be.a('object');
-                expect(res.body.error).to.be.an('boolean', "Servidor retornou erro ao enviar cenario sem recurso");
-                expect(res.body.error).to.be.equal(false, "Servidor retornou erro ao enviar cenario sem recurso");
-                expect(res.body.data).to.be.an('object');
+                expect(res).to.have.status(400);
                 done();
             })
         });
@@ -176,16 +168,13 @@ describe('Cenarios', () => {
         it('Insere cenario com um recurso', (done) => {
             chai.request(app).post("/cenario/").send({
                 tituloCenario: 'novidade',
-                descricaoContexto: "sem recurso",
+                descricaoContexto: 'sem recurso',
                 nomeAtor: 'Larissa,Ricardo',
                 descricaoEpisodio: 'episodio,Opcional',
-                descricaoRecurso: "note",
+                descricaoRecurso: 'note',
                 descricaoExcecao: 'exceção'
             }).end((err, res) => {
-                expect(res.body).to.be.a('object');
-                expect(res.body.error).to.be.an('boolean', "Servidor retornou erro ao enviar cenario com 1 recurso");
-                expect(res.body.error).to.be.equal(false, "Servidor retornou erro ao enviar cenario com 1 recurso");
-                expect(res.body.data).to.be.an('object');
+                expect(res).to.have.status(200);
                 done();
             })
         });
@@ -199,10 +188,7 @@ describe('Cenarios', () => {
                 descricaoRecurso: "note,ES",
                 descricaoExcecao: 'exceção'
             }).end((err, res) => {
-                expect(res.body).to.be.a('object');
-                expect(res.body.error).to.be.an('boolean', "Servidor retornou erro ao enviar cenario com 2 ou mais recurso");
-                expect(res.body.error).to.be.equal(false, "Servidor retornou erro ao enviar cenario com 2 ou mais recurso");
-                expect(res.body.data).to.be.an('object');
+                expect(res).to.have.status(200);
                 done();
             })
         });
@@ -213,14 +199,11 @@ describe('Cenarios', () => {
                 tituloCenario: 'novidade',
                 descricaoContexto: "sem arores",
                 nomeAtor: '',
-                descricaoEpisodio: 'episodio1,Opcional',
+                descricaoEpisodio: 'episodio,Opcional',
                 descricaoRecurso: "note,ES",
                 descricaoExcecao: 'exceção'
             }).end((err, res) => {
-                expect(res.body).to.be.a('object');
-                expect(res.body.error).to.be.an('boolean', "Servidor retornou erro ao enviar cenario sem atores");
-                expect(res.body.error).to.be.equal(false, "Servidor retornou erro ao enviar cenario sem atores");
-                expect(res.body.data).to.be.an('object');
+                expect(res).to.have.status(400);
                 done();
             })
         });
@@ -234,10 +217,7 @@ describe('Cenarios', () => {
                 descricaoRecurso: "note",
                 descricaoExcecao: 'exceção'
             }).end((err, res) => {
-                expect(res.body).to.be.a('object');
-                expect(res.body.error).to.be.an('boolean', "Servidor retornou erro ao enviar cenario com 1 ator");
-                expect(res.body.error).to.be.equal(false, "Servidor retornou erro ao enviar cenario com 1 ator");
-                expect(res.body.data).to.be.an('object');
+                expect(res).to.have.status(200);
                 done();
             })
         });
@@ -251,10 +231,7 @@ describe('Cenarios', () => {
                 descricaoRecurso: "note,ES",
                 descricaoExcecao: 'exceção'
             }).end((err, res) => {
-                expect(res.body).to.be.a('object');
-                expect(res.body.error).to.be.an('boolean', "Servidor retornou erro ao enviar cenario com 2 ou mais atores");
-                expect(res.body.error).to.be.equal(false, "Servidor retornou erro ao enviar cenario com 2 ou mais atores");
-                expect(res.body.data).to.be.an('object');
+                expect(res).to.have.status(200);
                 done();
             })
         });
@@ -268,10 +245,7 @@ describe('Cenarios', () => {
                 descricaoRecurso: "note,ES",
                 descricaoExcecao: 'exceção'
             }).end((err, res) => {
-                expect(res.body).to.be.a('object');
-                expect(res.body.error).to.be.an('boolean', "Servidor retornou erro ao enviar cenario sem episodio");
-                expect(res.body.error).to.be.equal(false, "Servidor retornou erro ao enviar cenario sem episodio");
-                expect(res.body.data).to.be.an('object');
+                expect(res).to.have.status(400);
                 done();
             })
         });
@@ -285,11 +259,7 @@ describe('Cenarios', () => {
                 descricaoRecurso: "note",
                 descricaoExcecao: 'exceção'
             }).end((err, res) => {
-                expect(res.body).to.be.a('object');
-                console.log(res.body);
-                expect(res.body.error).to.be.an('boolean', "Servidor retornou erro ao enviar cenario com 1 episodio");
-                expect(res.body.error).to.be.equal(false, "Servidor retornou erro ao enviar cenario com 1 episodio");
-                expect(res.body.data).to.be.an('object');
+                expect(res).to.have.status(200);
                 done();
             })
         });
@@ -299,14 +269,11 @@ describe('Cenarios', () => {
                 tituloCenario: 'novidade',
                 descricaoContexto: "dois atores",
                 nomeAtor: 'Larissa,Ricardo',
-                descricaoEpisodio: 'episodio,Opcional/episodio,Opcional',
+                descricaoEpisodio: 'episodio,Opcionalepisodio,Opcional',
                 descricaoRecurso: "note,ES",
-                descricaoExcecao: 'exceção1'
+                descricaoExcecao: 'exceção'
             }).end((err, res) => {
-                expect(res.body).to.be.a('object');
-                expect(res.body.error).to.be.an('boolean', "Servidor retornou erro ao enviar cenario com 2 ou mais episodios");
-                expect(res.body.error).to.be.equal(false, "Servidor retornou erro ao enviar cenario com 2 ou mais episodios");
-                expect(res.body.data).to.be.an('object');
+                expect(res).to.have.status(200);
                 done();
             })
         });
@@ -315,19 +282,16 @@ describe('Cenarios', () => {
     })
     describe('Editar', () => {
         it('Editar cenário que não existe', (done) => {
-            chai.request(app).put("/cenario/0").end((err, res) => {
+            chai.request(app).put("/cenario/1").end((err, res) => {
                 expect(res).to.have.status(404);
-                expect(res.body).to.be.a('object');
-                expect(res.body.error).to.be.an('boolean');
-                expect(res.body.error).to.be.equal(true);
-                expect(res.body.message).to.be.equal("Cenario nao existe");
                 done();
             })
         });
 
         it('Alterar para um titulo que já existe', (done) => {
-            chai.request(app).put("/cenario/1").send({
-                tituloCenario: 'novidade'
+            chai.request(app).put("/cenario/").send({
+                id_cenario: 1,
+                titulo: 'novidade'
             }).end((err, res) => {
                 expect(res).to.have.status(400);
                 done();
@@ -336,7 +300,8 @@ describe('Cenarios', () => {
 
         it('Editar Cenario com campo vazio', (done) => {
             chai.request(app).put("/cenario/").send({
-                tituloCenario: '',
+                id_cenario: 1,
+                titulo: ''
             }).end((err, res) => {
                 expect(res).to.have.status(400);
                 done();
@@ -344,20 +309,127 @@ describe('Cenarios', () => {
         });
 
         it('Editar Cenario removendo todos os episodios', (done) => {
-            chai.request(app).put("/cenario/1/updateSemEp").end((err, res) => {
+            chai.request(app).put("/cenario/1/updateSemEp").send({
+                tituloCenario: 'teeee',
+                descricaoContexto: 'testeee',
+                nomeAtor: 'teste,teste',
+                descricaoEpisodio: '',
+                descricaoRecurso: 'testeste,teststests',
+                descricaoExcecao: 'teste'
+
+            }).end((err, res) => {
                 expect(res).to.have.status(200);
                 done();
             })
         })
 
         it('Editar Cenario com um episodio', (done) => {
-            chai.request(app).put("/cenario/1/").end((err, res) => {
+            chai.request(app).put("/cenario/1/updateSemEp").send({
+                tituloCenario: 'teeee',
+                descricaoContexto: 'testeee',
+                nomeAtor: 'teste,teste',
+                descricaoEpisodio: 'teste',
+                descricaoRecurso: 'testeste,teststests',
+                descricaoExcecao: 'teste'
+
+            }).end((err, res) => {
                 expect(res).to.have.status(200);
                 done();
             })
         })
         it('Editar Cenario com dois ou mais episodios', (done) => {
-            chai.request(app).put("/cenario/1/updateSemEp").end((err, res) => {
+            chai.request(app).put("/cenario/1/updateSemEp").send({
+                tituloCenario: 'teeee',
+                descricaoContexto: 'testeee',
+                nomeAtor: 'teste,teste',
+                descricaoEpisodio: 'teste,teste,teste',
+                descricaoRecurso: 'testeste,teststests',
+                descricaoExcecao: 'teste'
+            }).end((err, res) => {
+                expect(res).to.have.status(200);
+                done();
+            })
+        })
+        it('Editar Cenario removendo todos os Recursos', (done) => {
+            chai.request(app).put("/cenario/1/updateSemRec").send({
+                tituloCenario: 'teeee',
+                descricaoContexto: 'testeee',
+                nomeAtor: 'teste,teste',
+                descricaoEpisodio: 'dsadsadsa',
+                descricaoRecurso: '',
+                descricaoExcecao: 'teste'
+
+            }).end((err, res) => {
+                expect(res).to.have.status(200);
+                done();
+            })
+        })
+
+        it('Editar Cenario com um recurso', (done) => {
+            chai.request(app).put("/cenario/1/updateSemRec").send({
+                tituloCenario: 'teeee',
+                descricaoContexto: 'testeee',
+                nomeAtor: 'teste,teste',
+                descricaoEpisodio: 'teste',
+                descricaoRecurso: 'testest',
+                descricaoExcecao: 'teste'
+
+            }).end((err, res) => {
+                expect(res).to.have.status(200);
+                done();
+            })
+        })
+        it('Editar Cenario com dois ou mais recursos', (done) => {
+            chai.request(app).put("/cenario/1/updateSemRec").send({
+                tituloCenario: 'teeee',
+                descricaoContexto: 'testeee',
+                nomeAtor: 'teste,teste',
+                descricaoEpisodio: 'teste,teste,teste',
+                descricaoRecurso: 'testeste,teststests',
+                descricaoExcecao: 'teste'
+            }).end((err, res) => {
+                expect(res).to.have.status(200);
+                done();
+            })
+        })
+        it('Editar Cenario removendo todos os atores', (done) => {
+            chai.request(app).put("/cenario/1/updateSemAtor").send({
+                tituloCenario: 'teeee',
+                descricaoContexto: 'testeee',
+                nomeAtor: '',
+                descricaoEpisodio: 'teste',
+                descricaoRecurso: 'testeste,teststests',
+                descricaoExcecao: 'teste'
+
+            }).end((err, res) => {
+                expect(res).to.have.status(200);
+                done();
+            })
+        })
+
+        it('Editar Cenario com um ator', (done) => {
+            chai.request(app).put("/cenario/1/updateSemAtor").send({
+                tituloCenario: 'teeee',
+                descricaoContexto: 'testeee',
+                nomeAtor: 'teste',
+                descricaoEpisodio: 'teste',
+                descricaoRecurso: 'testeste,teststests',
+                descricaoExcecao: 'teste'
+
+            }).end((err, res) => {
+                expect(res).to.have.status(200);
+                done();
+            })
+        })
+        it('Editar Cenario com dois ou mais atores', (done) => {
+            chai.request(app).put("/cenario/1/updateSemAtor").send({
+                tituloCenario: 'teeee',
+                descricaoContexto: 'testeee',
+                nomeAtor: 'teste,teste',
+                descricaoEpisodio: 'teste,teste,teste',
+                descricaoRecurso: 'testeste,teststests',
+                descricaoExcecao: 'teste'
+            }).end((err, res) => {
                 expect(res).to.have.status(200);
                 done();
             })
@@ -367,10 +439,6 @@ describe('Cenarios', () => {
         it('Remover cenário que não existe', (done) => {
             chai.request(app).delete("/cenario/0").end((err, res) => {
                 expect(res).to.have.status(404);
-                expect(res.body).to.be.a('object');
-                expect(res.body.error).to.be.an('boolean');
-                expect(res.body.error).to.be.equal(true);
-                expect(res.body.message).to.be.equal("Cenario nao existe");
                 done();
             })
         });
