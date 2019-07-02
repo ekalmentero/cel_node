@@ -13,5 +13,6 @@ router.put("/:id/episodio/:idepisodio", cenarioController.updateEpisodio);
 router.put('/:id/execao/:id_exec',cenarioController.updateExec);
 router.put('/:id/recurso/:id_recurso',cenarioController.updateRecursos)
 router.put('/:id/updateSemEp',cenarioController.updateCenarioRemovendoEpisodios)
+router.put('/:id/updateSemRec',cenarioController.updateCenarioRemovendoRecursos)
 router.delete("/:id", cenarioController.delete);
 module.exports = router;
