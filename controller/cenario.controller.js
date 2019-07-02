@@ -140,7 +140,8 @@ exports.updateAtor = (req, res) => {
     }
   ).then(() => {
     res.status(200).send("updated.");
-  });
+  })
+  .catch(ator => res.status(400));
 };
 
 exports.updateContexto = (req, res) => {
@@ -156,7 +157,8 @@ exports.updateContexto = (req, res) => {
     }
   ).then(() => {
     res.status(200).send("updated.");
-  });
+  })
+  .catch(contexto => res.status(400));
 };
 
 exports.updateEpisodio = (req, res) => {
@@ -172,7 +174,8 @@ exports.updateEpisodio = (req, res) => {
     }
   ).then(() => {
     res.status(200).send("updated.");
-  });
+  })
+  .catch(episodio => res.status(400));
 };
 
 exports.delete = (req, res) => {
@@ -220,7 +223,8 @@ exports.updateExec = (req,res) =>{
     }
   ).then(() => {
     res.status(200).send("updated.");
-  });
+  })
+  .catch(excecao => res.status(400));
 };
 
 exports.updateRecursos= (req,res) =>{
@@ -236,7 +240,8 @@ exports.updateRecursos= (req,res) =>{
     }
   ).then(() => {
     res.status(200).send("updated.");
-  });
+  })
+  .catch(recurso => res.status(400));
 }
 
 exports.updateCenarioRemovendoEpisodios = (req, res) =>{
